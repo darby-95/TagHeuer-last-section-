@@ -1,0 +1,109 @@
+function canvas() {
+    let canvas = document.querySelector("#sec6 canvas")
+    let context = canvas.getContext("2d")
+  
+    canvas.width = window.innerWidth; 
+    canvas.height = window.innerHeight;
+  
+    window.addEventListener("resize", function () {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    })
+  
+    function files(index) {
+      let data = `./img/diamond/011.png
+      ./img/diamond/015.png
+      ./img/diamond/019.png
+      ./img/diamond/023.png
+      ./img/diamond/026.png
+      ./img/diamond/030.png
+      ./img/diamond/034.png
+      ./img/diamond/038.png
+      ./img/diamond/040.png
+      ./img/diamond/041.png
+      ./img/diamond/042.png
+      ./img/diamond/043.png
+      ./img/diamond/044.png
+      ./img/diamond/045.png
+      ./img/diamond/047.png
+      ./img/diamond/049.png
+      ./img/diamond/051.png
+      ./img/diamond/053.png
+      ./img/diamond/055.png
+      ./img/diamond/057.png
+      ./img/diamond/058.png
+      ./img/diamond/060.png
+      ./img/diamond/062.png
+      ./img/diamond/064.png
+      ./img/diamond/066.png
+      ./img/diamond/068.png
+      ./img/diamond/070.png
+      ./img/diamond/072.png
+      ./img/diamond/074.png
+      ./img/diamond/076.png
+      ./img/diamond/078.png
+      ./img/diamond/080.png
+      ./img/diamond/082.png`;
+      return data.split("\n")[index]
+    }
+    let frameCount=33;
+    let images=[];
+    let imageSeq={frame:0}
+  
+    for(let i=0; i<frameCount; i++){
+      let img=new Image();
+      img.src=files(i)
+      images.push(img)
+  }
+    gsap.to(imageSeq,{
+      frame:frameCount - 1,
+      snap:"frame",
+      ease:"none",
+      scrollTrigger:{
+        scrub:0.5,
+        trigger:"#sec6",
+        start:"top top",
+        end:"200% top",
+      },
+      onUpdate:render
+    })
+    images[0].onload=render;
+  
+    function render(){
+      scaleImage(images[imageSeq.frame],context)
+    }
+  
+    function scaleImage(img,ctx){
+      console.log(ctx)
+      let canvas=ctx.canvas;
+      let hRatio=canvas.width/img.width;
+      let vRatio=canvas.height/img.height;
+      let ratio=Math.max(hRatio,vRatio)
+      let centershift_x=(canvas.width - img.width * ratio)/2
+      let centershift_y=(canvas.height - img.height * ratio)/2
+  
+      ctx.clearRect(0,0,canvas.width,canvas.height)
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+        centershift_x,
+        centershift_y,
+        img.width*ratio,
+        img.height*ratio,
+      )
+    }
+    ScrollTrigger.create({
+      trigger:"#sec6",
+      start:"top top",
+      end:"200% top",
+      pin:true
+    })
+  
+  }
+canvas()
+    
+
+//////////// 사진 이미지
